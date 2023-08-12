@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_firebase_auth_v2/pages/login_page.dart';
+import 'package:flutter_firebase_auth_v2/pages/auth_page.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,10 +20,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 33, 170, 14)),
         useMaterial3: false,
       ),
-      home: const LoginPage(),
+      home: const AuthPage(),
+      //const AuthPage(),
     );
   }
 }

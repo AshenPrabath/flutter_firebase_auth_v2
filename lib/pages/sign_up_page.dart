@@ -1,26 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUp extends StatefulWidget {
   final void Function()? onPressed;
-  const LoginPage({super.key, required this.onPressed});
+  const SignUp({super.key, required this.onPressed});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUp> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool isLoading = false;
 
-  signInWithEmailAndPassword() async {
+  createUserWithEmailAndPassword() async {
     try {
       setState(() {
         isLoading = true;
       });
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text,
         password: _password.text,
       );
@@ -31,19 +31,24 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         isLoading = false;
       });
-      if (e.code == 'user-not-found') {
+      if (e.code == 'weak-password') {
         return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Wrong Email"),
+            content: Text("The password provided is too weak."),
           ),
         );
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'email-already-in-use') {
         return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Wrong password"),
+            content: Text("The account already exists for that email."),
           ),
         );
       }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print(e);
     }
   }
 
@@ -51,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Sign Up"),
       ),
       body: Center(
         child: Padding(
@@ -87,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        signInWithEmailAndPassword();
+                        createUserWithEmailAndPassword();
                       }
                     },
                     child: isLoading
@@ -95,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: CircularProgressIndicator(
                             color: Colors.white,
                           ))
-                        : const Text("Login"),
+                        : const Text("Sign Up"),
                   ),
                 ),
                 SizedBox(
@@ -103,9 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: widget.onPressed,
-                    child: const Text("Sign up"),
+                    child: const Text("Login"),
                   ),
-                )
+                ),
               ],
             ),
           ),
