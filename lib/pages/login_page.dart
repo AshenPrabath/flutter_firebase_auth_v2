@@ -69,9 +69,12 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(labelText: "Email"),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Email"),
                 ),
                 TextFormField(
+                  
                   controller: _password,
                   validator: (text) {
                     if (text == null || text.isEmpty) {
@@ -79,7 +82,9 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(labelText: "password"),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "password"),
                 ),
                 SizedBox(
                   width: double.infinity,
